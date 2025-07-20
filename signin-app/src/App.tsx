@@ -1,9 +1,15 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import LoginPage from './pages/login';
+import RegisterPage from './pages/register';
 
 function App() {
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-300 w-full">
-      <h1 className="text-2xl font-bold bg-white">hellow world</h1>
+    <div>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
     </div>
   );
 }
