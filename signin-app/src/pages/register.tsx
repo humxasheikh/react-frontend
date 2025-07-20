@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { register } from '../services/register';
 import { AxiosError } from 'axios';
 
@@ -9,12 +9,21 @@ function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const reset = () => {
+    setEmail('');
+    setPassword('');
+    setName('');
+    setLoading(false);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     try {
+      e.preventDefault();
       setLoading(true);
       console.log(name, email, password);
       const response = await register(name, email, password);
       console.log(response);
+      reset();
     } catch (e) {
       if (e instanceof AxiosError)
         setError(e.response?.data?.message ?? 'Invalid email or password.');
