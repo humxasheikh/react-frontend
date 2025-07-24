@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { addTodo, fectchTodos, type Todo } from '../services/todo';
+import {
+  addTodo,
+  deleteTodo,
+  fectchTodos,
+  updateTodo,
+  type Todo,
+} from '../services/todo';
 import { AxiosError } from 'axios';
 import AddTodoForm from '../components/AddTodoForm';
 
@@ -33,17 +39,48 @@ const TodosPage = () => {
     load();
   }, [token]);
 
-  const onAdd = async (title: string) => {
+  const addHandler = async (title: string) => {
     if (!token) return;
 
-    console.log('Adding todo:', title);
-    const newTodo = await addTodo(title, token!);
-    console.log('New todo:', newTodo);
-    alert(`This is a popup!, ${newTodo}`);
-    const sleep = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms));
-    await sleep(20000);
+    const newTodo = await addTodo(token!, title);
     setTodos((todos) => [newTodo, ...todos!]);
+  };
+
+  const deleteHandler = async (id: string) => {
+    if (!token) return;
+    try {
+      const data = await deleteTodo(token, id);
+      console.log(data);
+      const newTodos = todos?.filter((todo) => todo.id !== id);
+      setTodos([...newTodos!]);
+    } catch (e) {
+      console.log(e);
+      if (e instanceof AxiosError)
+        setError(e.response?.data?.message ?? 'Delete operation failed.');
+      else setError('Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const patchHandler = async (id: string) => {
+    if (!token) return;
+    try {
+      const updatedTodo = todos?.find((t) => t.id === id);
+      const data = await updateTodo(token, id, !updatedTodo?.completed);
+      console.log(data);
+      const newTodos = todos?.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      );
+      setTodos([...newTodos!]);
+    } catch (e) {
+      console.log(e);
+      if (e instanceof AxiosError)
+        setError(e.response?.data?.message ?? 'update failed.');
+      else setError('Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,7 +88,7 @@ const TodosPage = () => {
       <div className=" max-w-2xl mask-auto p-6  bg-gray-200 rounded w-full">
         <h1 className="text-center text-2xl font-bold mb-4"> My Todos</h1>
         {error && <div className="text-red-600">{error}</div>}
-        <AddTodoForm onAdd={onAdd} />
+        <AddTodoForm onAdd={addHandler} />
         {loading ? (
           <div>Loading...</div>
         ) : (
@@ -59,7 +96,8 @@ const TodosPage = () => {
             {todos?.map((todo) => (
               <li
                 key={todo.id}
-                className={`p-3 rounded border flex font-bold bg-white hover:bg-gray-100 hover:border-blue-700`}
+                onClick={() => patchHandler(todo.id)}
+                className={`p-3 rounded border flex font-bold bg-white hover:bg-gray-100 hover:border-blue-700 mb-1`}
               >
                 <span
                   className={`flex-1/3 ${todo.completed ? 'line-through decoration-red-500 decoration-2 ' : ''}`}
@@ -69,9 +107,7 @@ const TodosPage = () => {
                 <span className="flex-1/3">
                   {todo.completed ? 'completed' : 'pending'}
                 </span>
-                <button type="button" className="">
-                  x
-                </button>
+                <button onClick={() => deleteHandler(todo.id)}>x</button>
               </li>
             ))}
           </ul>
