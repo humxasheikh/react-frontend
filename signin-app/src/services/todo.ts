@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axio from 'axios';
+import { URL } from './consts';
 
 export interface Todo {
   id: string;
@@ -6,30 +7,17 @@ export interface Todo {
   completed: boolean;
 }
 
-const todos = [
-  {
-    id: '1',
-    title: 'learning react',
-    completed: false,
-  },
-  {
-    id: '2',
-    title: 'learning react',
-    completed: true,
-  },
-];
-
 export const fectchTodos = async (token: string): Promise<Todo[]> => {
-  return todos;
   try {
-    const response = await axios.get(`${URL}//singup`, {
+    const response = await axio.get(`${URL}/tasks`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(response.data);
     return response.data;
   } catch (e) {
-    if (axios.isAxiosError(e)) {
+    if (axio.isAxiosError(e)) {
       throw e;
     } else {
       console.error(e);
@@ -39,6 +27,70 @@ export const fectchTodos = async (token: string): Promise<Todo[]> => {
 };
 
 export const addTodo = async (token: string, title: string): Promise<Todo> => {
-  const todo: Todo = { id: `${Date.now},`, title, completed: false };
-  return todo;
+  try {
+    const response = await axio.post(
+      `${URL}/tasks`,
+      {
+        title: title,
+        completed: false,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    if (axio.isAxiosError(e)) {
+      throw e;
+    } else {
+      console.error(e);
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
+
+export const deleteTodo = async (token: string, id: string): Promise<Todo> => {
+  try {
+    const response = await axio.delete(`${URL}/tasks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (e) {
+    if (axio.isAxiosError(e)) {
+      throw e;
+    } else {
+      console.error(e);
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
+
+export const updateTodo = async (
+  token: string,
+  id: string,
+  completed: boolean
+): Promise<Todo> => {
+  try {
+    const response = await axio.patch(
+      `${URL}/tasks/${id}`,
+      { completed },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    if (axio.isAxiosError(e)) {
+      throw e;
+    } else {
+      console.error(e);
+      throw new Error('An unexpected error occurred');
+    }
+  }
 };
