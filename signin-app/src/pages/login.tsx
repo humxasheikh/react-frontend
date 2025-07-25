@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { loginAPI } from '../services/auth';
 import { AxiosError } from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const { login } = useAuth();
@@ -9,6 +10,8 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const reset = () => {
     setEmail('');
@@ -27,6 +30,7 @@ function LoginPage() {
       console.log('response:', data.access_token);
       setLoading(false);
       login(data.access_token);
+      navigate('/todos');
     } catch (e) {
       if (e instanceof AxiosError)
         setError(e.response?.data?.message ?? 'Invalid email or password.');
@@ -36,7 +40,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-fit  min-w-fit  mt-20 ml-10 mr-10 p-10 rounded-2xl bg-gray-100 px-4">
+    <div className="relative top-17 flex justify-center items-center min-h-fit  min-w-fit ml-10 mr-10 p-10 rounded-2xl bg-gray-100 px-4">
       <form className="w-full max-x-md p-8 bg-white rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Sign In
