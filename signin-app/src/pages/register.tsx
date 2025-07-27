@@ -33,7 +33,7 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-fit min-w-fit p-8 rounded-2xl bg-gray-100 px-4">
+    <div className="relative top-17 flex justify-center items-center min-h-fit min-w-fit ml-10 mr-10 p-10  rounded-2xl bg-gray-100 px-4">
       <form className="w-full  rounded-2xl max-x-md p-8 bg-white ">
         <h2 className="text-2xl text-center font-bold text-gray-800">
           Register
@@ -91,6 +91,12 @@ function RegisterPage() {
         >
           {loading ? 'Register...' : 'Register'}
         </button>
+        <p className="text-center text-sm">
+          Already have an account?{' '}
+          <a href="/login" className="text-blue-600 hover:underline">
+            Login
+          </a>
+        </p>
       </form>
     </div>
   );

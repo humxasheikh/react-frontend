@@ -96,15 +96,15 @@ const TodosPage = () => {
             {todos?.map((todo) => (
               <li
                 key={todo.id}
-                onClick={() => patchHandler(todo.id)}
-                className={`p-3 rounded border flex font-bold bg-white hover:bg-gray-100 hover:border-blue-700 mb-1`}
+                className={`p-3 rounded border flex  bg-white hover:bg-gray-100 hover:border-blue-700 mb-1`}
               >
                 <span
+                  onClick={() => patchHandler(todo.id)}
                   className={`flex-1/3 ${todo.completed ? 'line-through decoration-red-500 decoration-2 ' : ''}`}
                 >
                   {todo.title}
                 </span>
-                <span className="flex-1/3">
+                <span className=" font-bold flex-1/3">
                   {todo.completed ? 'completed' : 'pending'}
                 </span>
                 <button onClick={() => deleteHandler(todo.id)}>x</button>
