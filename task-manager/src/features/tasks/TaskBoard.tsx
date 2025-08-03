@@ -12,7 +12,9 @@ const statusLabels: Record<TaskStatus, string> = {
 };
 
 const TaskBoard = () => {
-  const { tasks } = useSelector((state: RootState) => state.tasks);
+  const { tasks, isLoading, isError } = useSelector(
+    (state: RootState) => state.tasks
+  );
   const dispatch = useAppDispatch();
 
   const grouped: Record<TaskStatus, Task[]> = {
@@ -39,6 +41,13 @@ const TaskBoard = () => {
       setEditData({});
     }
   };
+
+  if (isLoading)
+    return <div className="text-center mt-10">Loading tasks...</div>;
+  if (isError)
+    return <div className="text-center text-red-500">Error: {isError}</div>;
+  if (tasks.length === 0)
+    return <div className="text-center mt-10">No tasks found.</div>;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">

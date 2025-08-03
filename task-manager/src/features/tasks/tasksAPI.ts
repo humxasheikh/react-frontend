@@ -33,6 +33,5 @@ export const updateTaskAPI = async (task: Task): Promise<Task> => {
     body: JSON.stringify(task),
   });
   if (!res.ok) throw new Error('Failed to update task');
-  console.log(`updated task: ${task}`);
   return task;
 };
