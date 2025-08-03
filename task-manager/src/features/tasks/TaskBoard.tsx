@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-// import { deleteTask, updateTask } from './tasksSlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks';
 import type { Task, TaskStatus } from '../../types/task';
 import type { RootState } from '../../store';
+import { deleteTask, updateTask } from './tasksSlice';
 
 const statusLabels: Record<TaskStatus, string> = {
   todo: 'To Do',
@@ -13,7 +13,8 @@ const statusLabels: Record<TaskStatus, string> = {
 
 const TaskBoard = () => {
   const { tasks } = useSelector((state: RootState) => state.tasks);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const grouped: Record<TaskStatus, Task[]> = {
     todo: [],
     'in-progress': [],
@@ -26,13 +27,14 @@ const TaskBoard = () => {
   const [editData, setEditData] = useState<Partial<Task>>({});
 
   const startEdit = (task: Task) => {
+    if (!task.id) return;
     setEditingId(task.id);
     setEditData({ ...task });
   };
 
   const saveEdit = () => {
     if (editingId && editData.title) {
-      // dispatch(updateTask(editData as Task));
+      dispatch(updateTask(editData as Task));
       setEditingId(null);
       setEditData({});
     }
@@ -116,7 +118,7 @@ const TaskBoard = () => {
                             ✎
                           </button>
                           <button
-                            // onClick={() => dispatch(deleteTask(task.id))}
+                            onClick={() => dispatch(deleteTask(task.id || ''))}
                             className="text-red-500 text-sm"
                             title="Delete"
                           >
