@@ -11,7 +11,6 @@ const AddTodoForm = ({ onAdd }: Props) => {
     e.preventDefault();
     if (!title.trim()) return;
     onAdd(title.trim());
-    console.log(title);
     setTitle('');
   };
 

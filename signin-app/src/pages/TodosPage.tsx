@@ -21,7 +21,6 @@ const TodosPage = () => {
     const load = async () => {
       if (!token || !isFirstLoad.current) return;
       isFirstLoad.current = false;
-      console.log('Running fetchTodos effect');
 
       setLoading(true);
       try {
@@ -49,8 +48,7 @@ const TodosPage = () => {
   const deleteHandler = async (id: string) => {
     if (!token) return;
     try {
-      const data = await deleteTodo(token, id);
-      console.log(data);
+      await deleteTodo(token, id);
       const newTodos = todos?.filter((todo) => todo.id !== id);
       setTodos([...newTodos!]);
     } catch (e) {
@@ -68,7 +66,6 @@ const TodosPage = () => {
     try {
       const updatedTodo = todos?.find((t) => t.id === id);
       const data = await updateTodo(token, id, !updatedTodo?.completed);
-      console.log(data);
       const newTodos = todos?.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       );

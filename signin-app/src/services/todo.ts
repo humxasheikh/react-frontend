@@ -14,7 +14,6 @@ export const fectchTodos = async (token: string): Promise<Todo[]> => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (e) {
     if (axio.isAxiosError(e)) {

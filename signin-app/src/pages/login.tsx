@@ -27,7 +27,6 @@ function LoginPage() {
 
     try {
       const data = await loginAPI(email, password);
-      console.log('response:', data.access_token);
       setLoading(false);
       login(data.access_token);
       navigate('/todos');

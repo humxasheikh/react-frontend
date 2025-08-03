@@ -20,9 +20,7 @@ function RegisterPage() {
     try {
       e.preventDefault();
       setLoading(true);
-      console.log(name, email, password);
       const response = await register(name, email, password);
-      console.log(response);
       reset();
     } catch (e) {
       if (e instanceof AxiosError)
