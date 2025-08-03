@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { deleteTask, updateTask } from './tasksSlice';
+// import { deleteTask, updateTask } from './tasksSlice';
 import type { Task, TaskStatus } from '../../types/task';
 import type { RootState } from '../../store';
 
@@ -12,7 +12,7 @@ const statusLabels: Record<TaskStatus, string> = {
 };
 
 const TaskBoard = () => {
-  const tasks = useSelector((state: RootState) => state.tasks);
+  const { tasks } = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch();
   const grouped: Record<TaskStatus, Task[]> = {
     todo: [],
@@ -32,7 +32,7 @@ const TaskBoard = () => {
 
   const saveEdit = () => {
     if (editingId && editData.title) {
-      dispatch(updateTask(editData as Task));
+      // dispatch(updateTask(editData as Task));
       setEditingId(null);
       setEditData({});
     }
@@ -116,7 +116,7 @@ const TaskBoard = () => {
                             ✎
                           </button>
                           <button
-                            onClick={() => dispatch(deleteTask(task.id))}
+                            // onClick={() => dispatch(deleteTask(task.id))}
                             className="text-red-500 text-sm"
                             title="Delete"
                           >

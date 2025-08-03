@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { TaskStatus } from '../../types/task';
 import { useDispatch } from 'react-redux';
-import { addTask } from './tasksSlice';
+// import { addTask } from './tasksSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddTaskForm = () => {
@@ -14,15 +14,15 @@ const AddTaskForm = () => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    dispatch(
-      addTask({
-        id: uuidv4(),
-        title,
-        description,
-        status,
-        createdAt: new Date().toISOString(),
-      })
-    );
+    // dispatch(
+    //   addTask({
+    //     id: uuidv4(),
+    //     title,
+    //     description,
+    //     status,
+    //     createdAt: new Date().toISOString(),
+    //   })
+    // );
 
     setTitle('');
     setDescription('');
