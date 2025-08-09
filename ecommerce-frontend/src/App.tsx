@@ -1,12 +1,18 @@
+import { Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import ProductDetail from './pages/ProductDetails';
+import Cart from './pages/Cart';
+
 function App() {
   return (
-    <>
-      <div className="min-h-screen bg-amber-400 ">
-        <h3 className="w-full  h-full text-amber-950 text-2xl justify-center items-center ">
-          Tailwind is working perfectly
-        </h3>
-      </div>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="product/:id" element={<ProductDetail />} />
+        <Route path="cart" element={<Cart />} />
+      </Route>
+    </Routes>
   );
 }
 
