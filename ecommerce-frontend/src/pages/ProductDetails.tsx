@@ -2,11 +2,19 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchProductById } from '../utils/api';
 import type { Product } from '../types/Products';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/cartSlice';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    if (product) dispatch(addToCart(product));
+  };
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -36,7 +44,6 @@ export default function ProductDetail() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="grid md:grid-cols-2 gap-12 border border-gray-200 rounded-3xl overflow-hidden p-6 shadow-xl">
-        {/* Image Gallery */}
         <div className="flex flex-col gap-6">
           <div className="rounded-2xl overflow-hidden shadow-lg">
             <img
@@ -78,7 +85,7 @@ export default function ProductDetail() {
           </div>
           <button
             className="mt-8 w-full px-8 py-4 bg-blue-600 text-white font-semibold text-lg rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            onClick={() => console.log('Item added to cart!')}
+            onClick={handleAddToCart}
           >
             Add to Cart
           </button>
